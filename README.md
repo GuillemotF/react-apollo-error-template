@@ -1,6 +1,6 @@
 # Apollo Client Error Template
 
-Issues related :
+Related Issues:
 - https://github.com/apollographql/apollo-client/issues/2258
 - https://github.com/apollographql/apollo-client/issues/2513
 - https://github.com/apollographql/react-apollo/issues/1229
