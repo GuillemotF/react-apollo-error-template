@@ -1,26 +1,22 @@
-import { graphql, print } from "graphql";
-import { ApolloLink, Observable } from "apollo-link";
-import { schema } from "./schema";
+import { createHttpLink } from "apollo-link-http";
+import { onError } from "apollo-link-error";
 
-export const link = new ApolloLink(operation => {
-  return new Observable(observer => {
-    const { query, operationName, variables } = operation;
-    delay(300)
-      .then(() =>
-        graphql(schema, print(query), null, null, variables, operationName)
-      )
-      .then(result => {
-        observer.next(result);
-        observer.complete();
-      })
-      .catch(observer.error.bind(observer));
-  });
+const uri = "http://159.203.96.223/graphql"; // Fake graphql api
+const httpLink = createHttpLink({
+  uri,
+  fetch
 });
 
-function delay(ms) {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve();
-    }, ms);
-  });
-}
+const errorAfterware = onError(({ networkError, operation, response }) => {
+  console.log(
+    "\nonError afterware logs : ",
+    "\n\nNetwork error : ",
+    networkError,
+    "\nOperation : ",
+    operation,
+    "\nResponse : ",
+    response
+  );
+});
+
+export const link = errorAfterware.concat(httpLink);

@@ -1,48 +1,70 @@
 import React, { Component } from "react";
-import { graphql } from "react-apollo";
-import gql from "graphql-tag";
+import Query from "./Query";
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      renderQuery: false
+    };
+  }
+  mountQuery() {
+    this.setState({
+      renderQuery: true
+    });
+  }
+  unmountQuery() {
+    this.setState({
+      renderQuery: false
+    });
+  }
   render() {
-    const { data: { loading, people } } = this.props;
     return (
       <main>
         <header>
           <h1>Apollo Client Error Template</h1>
+          <p>This template demonstrate multiple issues :</p>
+          <ol>
+            <li>
+              An unhandled network error when unmounting a component that failed
+              to fetch
+            </li>
+            <li>
+              Undefined response in afterware for a network error (e.g. client
+              offline or server crashed)
+            </li>
+            <li>Component can't render data after an error (stuck on error)</li>
+          </ol>
           <p>
-            This is a template that you can use to demonstrate an error in
-            Apollo Client. Edit the source code and watch your browser window
-            reload with the changes.
+            I'm using a Fake graphql server to demonstrate this network error
           </p>
           <p>
-            The code which renders this component lives in{" "}
-            <code>./src/App.js</code>.
+            The "New component with apollo" button calls a component with
+            apolloClient HOC
           </p>
           <p>
-            The GraphQL schema is in <code>./src/graphql/schema</code>.
-            Currently the schema just serves a list of people with names and
-            ids.
+            Go offline, fetch or refetch then unmount the component to throw the
+            error in console
+          </p>
+          <p>
+            Go offline, fetch or refetch then go online & try to refetch,
+            queries are sent but the component is still on error
           </p>
         </header>
-        {loading ? (
-          <p>Loading…</p>
+        {this.state.renderQuery ? (
+          <div>
+            <button onClick={() => this.unmountQuery()}> Unmount </button>
+            <Query />
+          </div>
         ) : (
-          <ul>
-            {people.map(person => <li key={person.id}>{person.name}</li>)}
-          </ul>
+          <button onClick={() => this.mountQuery()}>
+            {" "}
+            New component with apollo{" "}
+          </button>
         )}
       </main>
     );
   }
 }
 
-export default graphql(
-  gql`
-    query ErrorTemplate {
-      people {
-        id
-        name
-      }
-    }
-  `
-)(App);
+export default App;
