@@ -10,7 +10,7 @@ class Query extends Component {
     };
   }
   componentWillUnmount() {
-    console.log("Unmounting component with apollo");
+    console.log("Unmounting component");
   }
   renderQuery() {
     this.setState({

@@ -1,21 +1,27 @@
 # Apollo Client Error Template
 
-Welcome! If you are here then you were likely referred to this repo when reporting an error to [`apollographql/apollo-client`][1]. The core team is invested in making the best client for GraphQL possible, so when you hit an error it is important to the team that the error is resolved as soon as possible.
+Issues related :
+- https://github.com/apollographql/apollo-client/issues/2258
+- https://github.com/apollographql/apollo-client/issues/2513
+- https://github.com/apollographql/react-apollo/issues/1229
+- https://github.com/apollographql/apollo-client/issues/2533
 
-Unfortunately, describing an error in GitHub is often not enough to truly understand the reported issue. By creating a small reproduction test case using this template repo the Apollo Client team will be able to identify and fix your error much faster then they could without.
+#### This template demonstrate multiple issues :
 
-This repo was created with [`create-react-app`][2] for a great developer experience. If you are not using React then a small reproduction case with your framework of choice would go a long way.
+- An unhandled network error when unmounting a component that failed to fetch
+- Undefined response in afterware for a network error (e.g. client offline or server crashed)
+- Component can't render data after an error (stuck on error)
 
-To get started writing your error case just clone this repository to your GitHub account, install all dependencies with `npm install`, start the development server with `npm start`, make the changes that will reproduce this error locally, and push your changes to GitHub where the `apollo-client` team can see them.
+#### How it works
 
-To make changes in the GraphQL schema make sure to look at the `./src/graphql` folder where we define a GraphQL schema using [GraphQL.js][3] which will run in the browser.
+This template is using the Fake graphql server from : http://fake.graphql.guru/
 
-[1]: https://github.com/apollographql/apollo-client
-[2]: https://github.com/facebookincubator/create-react-app
-[3]: http://graphql.org/graphql-js/
+You'll have to simulate an offline state (e.g with chrome developer tools -> Network), this is the same behavior as server offline or crashed.
 
-# Deploy to Github Pages
-You can deploy your built error demo to gh-pages branch by running:
-```
-npm run deploy YOUR_GIT_REMOTE
-```
+The "New component with apollo" button calls a component with apolloClient HOC querying a random firstname
+
+#### Steps to reproduce issues
+
+- run `yarn` then `yarn start` (or `npm install` then `npm run start`)
+- Go offline, click button to fetch then unmount the component to throw the error in console
+- Go online then try to fetch/refetch, the component still displays error (but queries are sent and return data)

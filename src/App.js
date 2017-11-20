@@ -23,7 +23,7 @@ class App extends Component {
       <main>
         <header>
           <h1>Apollo Client Error Template</h1>
-          <p>This template demonstrate multiple issues :</p>
+          <h2>This template demonstrate multiple issues :</h2>
           <ol>
             <li>
               An unhandled network error when unmounting a component that failed
@@ -35,21 +35,31 @@ class App extends Component {
             </li>
             <li>Component can't render data after an error (stuck on error)</li>
           </ol>
+          <h2>How it works :</h2>
           <p>
-            I'm using a Fake graphql server to demonstrate this network error
+            This template is using the Fake graphql server from :
+            http://fake.graphql.guru/
+          </p>
+          <p>
+            You'll have to simulate an offline state (e.g. with chrome developer
+            tools -> Network), this is the same behavior as server offline or
+            crashed.
           </p>
           <p>
             The "New component with apollo" button calls a component with
-            apolloClient HOC
+            apolloClient HOC querying a random firstname
           </p>
-          <p>
-            Go offline, fetch or refetch then unmount the component to throw the
-            error in console
-          </p>
-          <p>
-            Go offline, fetch or refetch then go online & try to refetch,
-            queries are sent but the component is still on error
-          </p>
+          <h2>Steps to reproduce issues :</h2>
+          <ol>
+            <li>
+              Go offline, click button to fetch then unmount the component to
+              throw the error in console
+            </li>
+            <li>
+              Go online then try to fetch/refetch, the component still displays
+              error (but queries are sent and return data)
+            </li>
+          </ol>
         </header>
         {this.state.renderQuery ? (
           <div>
